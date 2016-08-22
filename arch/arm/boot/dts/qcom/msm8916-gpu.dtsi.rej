@@ -1,0 +1,11 @@
+--- arch/arm/boot/dts/qcom/msm8916-gpu.dtsi
++++ arch/arm/boot/dts/qcom/msm8916-gpu.dtsi
+@@ -27,7 +27,7 @@
+ 
+ 		qcom,chipid = <0x03000600>;
+ 
+-		qcom,initial-pwrlevel = <3>;
++		qcom,initial-pwrlevel = <4>;
+ 
+ 		/* Idle Timeout */
+ 		qcom,idle-timeout = <80>;

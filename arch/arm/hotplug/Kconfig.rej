@@ -1,0 +1,12 @@
+--- arch/arm/hotplug/Kconfig
++++ arch/arm/hotplug/Kconfig
+@@ -17,3 +17,9 @@ config ALUCARD_HOTPLUG
+  	default n
+  	help
+  	  Generic Alucard-hotplug cpu hotplug driver for ARM SOCs
++
++config MSM_SLEEPER
++ 	bool "CPU hotplug driver"
++ 	default y
++ 	help
++ 	  CPU hotplug driver
