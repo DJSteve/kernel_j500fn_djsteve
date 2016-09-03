@@ -1,12 +1,9 @@
 #ifndef _UAPI_HBTP_INPUT_H
 #define _UAPI_HBTP_INPUT_H
-
 #include <linux/input.h>
-
 #define HBTP_MAX_FINGER		20
 #define HBTP_ABS_MT_FIRST	ABS_MT_TOUCH_MAJOR
 #define HBTP_ABS_MT_LAST	ABS_MT_TOOL_Y
-
 struct hbtp_input_touch {
 	bool active;
 	__s32 tool;
@@ -17,30 +14,25 @@ struct hbtp_input_touch {
 	__s32 minor;
 	__s32 orientation;
 };
-
 struct hbtp_input_mt {
 	__s32 num_touches;
 	struct hbtp_input_touch touches[HBTP_MAX_FINGER];
 	struct timeval time_val;
 };
-
 struct hbtp_input_absinfo {
 	bool  active;
 	__u16 code;
 	__s32 minimum;
 	__s32 maximum;
 };
-
 enum hbtp_afe_power_cmd {
 	HBTP_AFE_POWER_ON,
 	HBTP_AFE_POWER_OFF,
 };
-
 struct hbtp_input_key {
 	__u32 code;
 	__s32 value;
 };
-
 /* ioctl */
 #define HBTP_INPUT_IOCTL_BASE	'T'
 #define HBTP_SET_ABSPARAM	_IOW(HBTP_INPUT_IOCTL_BASE, 201, \
@@ -51,6 +43,4 @@ struct hbtp_input_key {
 					enum hbtp_afe_power_cmd)
 #define HBTP_SET_KEYDATA	_IOW(HBTP_INPUT_IOCTL_BASE, 204, \
 					struct hbtp_input_key)
-
 #endif	/* _UAPI_HBTP_INPUT_H */
-
