@@ -79,6 +79,7 @@ arch-$(CONFIG_CPU_32v3)		:=-D__LINUX_ARM_ARCH__=3 -march=armv3
 # bigger problems.
 arch-$(CONFIG_ARCH_MSM_KRAIT)	:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-mcpu=cortex-a15,-march=armv7-a)
 
+arch-$(CONFIG_ARCH_MSM8916)	:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-mcpu=cortex-a53,-march=armv8-a)
 
 # Osprey is 32bit cortex-a53 so tune accordingly
 arch-$(CONFIG_ARCH_MSM8916)	:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-mcpu=cortex-a53,-march=armv7-a)
