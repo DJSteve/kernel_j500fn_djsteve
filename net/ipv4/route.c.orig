@@ -993,21 +993,20 @@ void ipv4_sk_update_pmtu(struct sk_buff *skb, struct sock *sk, u32 mtu)
 	const struct iphdr *iph = (const struct iphdr *) skb->data;
 	struct flowi4 fl4;
 	struct rtable *rt;
-	struct dst_entry *odst = NULL;
+	struct dst_entry *dst;
 	bool new = false;
 
 	bh_lock_sock(sk);
-	odst = sk_dst_get(sk);
+	rt = (struct rtable *) __sk_dst_get(sk);
 
-	if (sock_owned_by_user(sk) || !odst) {
+	if (sock_owned_by_user(sk) || !rt) {
 		__ipv4_sk_update_pmtu(skb, sk, mtu);
 		goto out;
 	}
 
 	__build_flow_key(&fl4, sk, iph, 0, 0, 0, 0, 0);
 
-	rt = (struct rtable *)odst;
-	if (odst->obsolete && odst->ops->check(odst, 0) == NULL) {
+	if (!__sk_dst_check(sk, 0)) {
 		rt = ip_route_output_flow(sock_net(sk), &fl4, sk);
 		if (IS_ERR(rt))
 			goto out;
@@ -1017,7 +1016,8 @@ void ipv4_sk_update_pmtu(struct sk_buff *skb, struct sock *sk, u32 mtu)
 
 	__ip_rt_update_pmtu((struct rtable *) rt->dst.path, &fl4, mtu);
 
-	if (!dst_check(&rt->dst, 0)) {
+	dst = dst_check(&rt->dst, 0);
+	if (!dst) {
 		if (new)
 			dst_release(&rt->dst);
 
@@ -1029,11 +1029,10 @@ void ipv4_sk_update_pmtu(struct sk_buff *skb, struct sock *sk, u32 mtu)
 	}
 
 	if (new)
-		sk_dst_set(sk, &rt->dst);
+		__sk_dst_set(sk, &rt->dst);
 
 out:
 	bh_unlock_sock(sk);
-	dst_release(odst);
 }
 EXPORT_SYMBOL_GPL(ipv4_sk_update_pmtu);
 
